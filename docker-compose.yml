@@ -1,0 +1,37 @@
+x-app-config:
+  &app-config
+  DJANGO_ENV: qa
+
+x-db-config: &db-config
+  DATABASE_NAME: postgres
+  DATABASE_USER: postgres
+  DATABASE_PASSWORD: pgpassword
+  DATABASE_HOST: db
+  DATABASE_PORT: 5432
+  POSTGRES_PASSWORD: pgpassword
+
+x-api-volumes:
+  &api-volumes
+  - ./server:/app:cached
+  - ~/.bash_history:/root/.bash_history
+
+services:
+  api:
+    image: todo-list-api
+    build: ./server
+    volumes: *api-volumes
+    ports:
+      - 8000:8000
+    depends_on:
+      - db
+    environment: &api-environment
+      <<: [*db-config]
+      DJANGO_ENV: dev
+      DJANGO_SECRET_KEY: secret_key
+    command: python ./manage.py runserver 0.0.0.0:8000
+
+  db:
+    image: postgres:15
+    ports:
+      - 5432:5432
+    environment: *db-config
