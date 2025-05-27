@@ -1,7 +1,7 @@
 
 [tool.poetry]
 name = "ToDo List API"
-version = "0.0.1"
+version = "1.0.0"
 description = "A simple Django-based to-do list API"
 authors = ["Ruslan Iliev <dddrsln@mail.ru>"]
 
@@ -13,3 +13,14 @@ psycopg2-binary = "^2.9.10"
 django-extensions = "^4.1"
 djangorestframework = "^3.16.0"
 drf-yasg = "^1.21.10"
+django-filter = "^25.1"
+pytest = "^8.3.5"
+djangorestframework-simplejwt = "^5.5.0"
+
+
+[tool.poetry.group.dev.dependencies]
+pytest-django = "^4.11.1"
+
+[tool.pytest.ini_options]
+DJANGO_SETTINGS_MODULE = "todo_list.settings"
+python_files = ["tests/test_*.py"]
