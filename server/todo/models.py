@@ -15,12 +15,16 @@ class CustomUserManager(BaseUserManager):
         user.save(using=self._db)
         return user
 
-    def create_user(self, email: str, password: str = None, **extra_fields: Any) -> "User":
+    def create_user(
+        self, email: str, password: str = None, **extra_fields: Any
+    ) -> "User":
         extra_fields.setdefault("is_staff", False)
         extra_fields.setdefault("is_superuser", False)
         return self._create_user(email, password, **extra_fields)
 
-    def create_superuser(self, email: str, password: str = None, **extra_fields: Any) -> "User":
+    def create_superuser(
+        self, email: str, password: str = None, **extra_fields: Any
+    ) -> "User":
         extra_fields.setdefault("is_staff", True)
         extra_fields.setdefault("is_superuser", True)
 
@@ -49,5 +53,13 @@ class Task(models.Model):
         return f"{self.id} - {self.title}"
 
 
-# class TechParkParticipants(Model):
-#     pass
+class TechParkParticipants(models.Model):
+    serial_number = models.IntegerField(unique=True, null=False, blank=False)
+    join_date = models.DateField(null=False, blank=False)
+    end_date = models.DateField(null=False, blank=False)
+    bin = models.BigIntegerField(null=False, blank=False)
+    status = models.BooleanField(default=True, null=False, blank=False)
+    company_name = models.CharField(max_length=100, null=False, blank=False)
+
+    def __str__(self) -> str:
+        return str(self.serial_number)

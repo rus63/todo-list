@@ -49,7 +49,7 @@ class TestViewSetBase(APITestCase):
     ) -> dict:
         response = self.request_create(data, args, user=user)
         assert response.status_code == HTTPStatus.CREATED, response.content
-        return response.data()
+        return response.json()
 
     def request_retrieve(self, entity: dict, user: User | None = None) -> Response:
         url = self.detail_url(entity["id"])
