@@ -29,12 +29,21 @@ class TestTaskViewSet(TestViewSetBase):
 
         assert response == self.get_expected_task_detail(self.task1)
 
+    def test_create_task(self) -> None:
+        attr = {"title": "task 3", "description": "desc 3", "completed": True}
+
+        response = self.create(attr)
+
+        created_task_obj = Task.objects.get(id=response["id"])
+        assert response == self.get_expected_task_detail(created_task_obj)
+
     def test_update_task(self) -> None:
         updated_attrs = {
             "title": "Updated title 1",
             "description": "Updated description1",
             "completed": False,
         }
+
         response = self.update({"id": self.task1.id}, updated_attrs)
 
         assert response == {
@@ -46,6 +55,7 @@ class TestTaskViewSet(TestViewSetBase):
         updated_attrs = {
             "title": "Partial Updated title 1",
         }
+
         response = self.partial_update({"id": self.task1.id}, updated_attrs)
 
         assert response == {
@@ -64,5 +74,5 @@ class TestTaskViewSet(TestViewSetBase):
             "title": task.title,
             "description": task.description,
             "completed": task.completed,
-            "updated_at": task.updated_at.strftime("%Y-%m-%d %H:%M")
+            "updated_at": task.updated_at.strftime("%Y-%m-%d %H:%M"),
         }
